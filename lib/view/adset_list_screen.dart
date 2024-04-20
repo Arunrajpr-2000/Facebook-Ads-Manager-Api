@@ -48,8 +48,8 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialogWithTextField(
-                    title: 'Add Campaign',
-                    hintText: 'Enter Campaign name',
+                    title: 'Add Adset',
+                    hintText: 'Enter Adset name',
                     onSubmit: (name) async {
                       log('Submitted name: $name');
                       setState(() {
@@ -72,7 +72,7 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
                               geoLocations: geoLocations,
                               interests: [interest]),
                           startTime: formattedDateTime,
-                          status: "PAUSED");
+                          status: "ACTIVE");
                       await postAdset(adsetModel);
                     },
                   ),

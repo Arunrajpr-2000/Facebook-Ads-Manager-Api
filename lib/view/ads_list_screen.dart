@@ -63,7 +63,7 @@ class _AdsListScreenState extends State<AdsListScreen> {
                         name: name,
                         adsetId: widget.adSetId,
                         creative: creative,
-                        status: "PAUSED",
+                        status: "ACTIVE",
                       );
                       await postAds(adsModel);
                     },

@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:just_ghar_facebook_post/components/alert_dialogue.dart';
 import 'package:just_ghar_facebook_post/core/const.dart';
 import 'package:just_ghar_facebook_post/model/campaign_model.dart';
 import 'package:just_ghar_facebook_post/view/adset_list_screen.dart';
 import 'dart:developer';
+
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
 
 class FacebookCampaigns extends StatefulWidget {
   const FacebookCampaigns({super.key});
@@ -31,6 +35,11 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
       appBar: AppBar(
         title: const Text('Facebook Campaigns'),
         actions: [
+          IconButton(
+              onPressed: () async {
+                await uploadImage();
+              },
+              icon: const Icon(Icons.add_a_photo)),
           IconButton(
               onPressed: () async {
                 setState(() {
@@ -140,6 +149,63 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  Future<void> uploadImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      var url = Uri.parse('$adAccBaseUrl/adimages');
+      var request = http.MultipartRequest('POST', url);
+
+      // Create a MultipartFile from the picked image file
+      var file = await http.MultipartFile.fromPath(
+        'filename',
+        pickedFile.path,
+        contentType:
+            MediaType('image', path.extension(pickedFile.path).substring(1)),
+      );
+
+      request.fields['access_token'] = accessToken;
+      request.files.add(file);
+
+      var response = await http.Response.fromStream(await request.send());
+
+      if (response.statusCode == 200) {
+        var responseData = jsonDecode(response.body);
+
+        // Check if the 'images' field exists in the response
+        if (responseData.containsKey('images')) {
+          var images = responseData['images'];
+          if (images is Map) {
+            // Iterate over the image objects
+            images.forEach((key, value) {
+              if (value is Map) {
+                final imageData = value;
+                log('Uploaded image:');
+                log('  Hash: ${imageData['hash']}');
+                log('  ID: $key');
+                log('  URL: ${imageData['url']}');
+                log('  Name: ${imageData['name']}');
+              }
+            });
+          } else {
+            log('Unexpected response format: $responseData');
+          }
+        } else {
+          log('No images found in the response: $responseData');
+        }
+      } else {
+        log('Failed to upload image. Status code: ${response.statusCode}');
+        log('Response body: ${response.body}');
+      }
+    } else {
+      log('No image selected');
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('No image selected')));
     }
   }
 }

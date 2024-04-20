@@ -7,6 +7,8 @@ Facebook App     : Just Ghar app
 Facebook Page    : JustGhar
 
 Docs Url  : https://developers.facebook.com/docs/marketing-apis/get-started
+Facebook Developer App Link : https://developers.facebook.com/apps
+
 
 
 
