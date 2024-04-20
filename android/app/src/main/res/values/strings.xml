@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Just Ghar app</string>
+    <string name="facebook_app_id">1079863486424490</string>
+    <string name="fb_login_protocol_scheme">fb1079863486424490</string> <!-- (fb+facebook_app_id) -->
+    <string name="facebook_client_token">90e8fe06109879c61f9029f24a13bd59</string>
+</resources>
