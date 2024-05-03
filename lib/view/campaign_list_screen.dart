@@ -5,10 +5,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:just_ghar_facebook_post/components/alert_dialogue.dart';
 import 'package:just_ghar_facebook_post/core/const.dart';
 import 'package:just_ghar_facebook_post/model/campaign_model.dart';
+import 'package:just_ghar_facebook_post/model/lead_form_list_model.dart';
 import 'package:just_ghar_facebook_post/view/adset_list_screen.dart';
 import 'dart:developer';
 
 import 'package:http_parser/http_parser.dart';
+import 'package:just_ghar_facebook_post/view/lead_gen_form/lead_form_list.dart';
 import 'package:path/path.dart' as path;
 
 class FacebookCampaigns extends StatefulWidget {
@@ -36,42 +38,79 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
         title: const Text('Facebook Campaigns'),
         actions: [
           IconButton(
-              onPressed: () async {
-                await uploadImage();
-              },
-              icon: const Icon(Icons.add_a_photo)),
-          IconButton(
-              onPressed: () async {
-                setState(() {
-                  isLoading = true;
-                });
-                await getCampaigns();
-              },
-              icon: const Icon(Icons.refresh)),
-          IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialogWithTextField(
-                    title: 'Add Campaign',
-                    hintText: 'Enter Campaign name',
-                    onSubmit: (name) async {
-                      log('Submitted name: $name');
-                      setState(() {
-                        isLoading = true;
-                      });
-                      CampaignModel campaignModel = CampaignModel(
-                        name: name,
-                        objective: "OUTCOME_ENGAGEMENT",
-                        status: "ACTIVE",
-                        specialAdCategories: ["HOUSING"],
-                      );
-                      await postCampaign(campaignModel);
-                    },
-                  ),
-                );
-              },
-              icon: const Icon(Icons.add))
+            onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
+              await getCampaigns();
+            },
+            icon: const Icon(Icons.refresh),
+          ),
+          PopupMenuButton<int>(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 1,
+                child: const Row(
+                  children: [
+                    Icon(Icons.add),
+                    SizedBox(width: 8),
+                    Text('Add Campaign'),
+                  ],
+                ),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialogWithTextField(
+                      title: 'Add Campaign',
+                      hintText: 'Enter Campaign name',
+                      onSubmit: (name) async {
+                        log('Submitted name: $name');
+                        setState(() {
+                          isLoading = true;
+                        });
+                        CampaignModel campaignModel = CampaignModel(
+                          name: name,
+                          objective: "OUTCOME_ENGAGEMENT",
+                          status: "ACTIVE",
+                          specialAdCategories: ["HOUSING"],
+                        );
+                        await postCampaign(campaignModel);
+                      },
+                    ),
+                  );
+                },
+              ),
+              PopupMenuItem(
+                value: 2,
+                child: const Row(
+                  children: [
+                    Icon(Icons.add_a_photo),
+                    SizedBox(width: 8),
+                    Text('Add Image'),
+                  ],
+                ),
+                onTap: () async {
+                  await uploadImage();
+                },
+              ),
+              PopupMenuItem(
+                value: 3,
+                child: const Row(
+                  children: [
+                    Icon(Icons.note),
+                    SizedBox(width: 8),
+                    Text('View Lead Forms'),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const LeadFormListScreen(),
+                  ));
+                },
+              ),
+            ],
+            icon: const Icon(Icons.more_vert),
+          ),
         ],
       ),
       body: isLoading == true
