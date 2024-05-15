@@ -7,7 +7,7 @@ import 'package:just_ghar_facebook_post/components/utils.dart';
 import 'package:just_ghar_facebook_post/model/adset_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_ghar_facebook_post/core/const.dart';
-import 'package:just_ghar_facebook_post/view/ads_list_screen.dart';
+import 'package:just_ghar_facebook_post/view/ads_list_screen/ads_list_screen.dart';
 
 class AdsetListScreen extends StatefulWidget {
   final String campaignId;
