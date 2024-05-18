@@ -21,7 +21,7 @@ android/app/src/main/res/values/
 
 Create strings.xml 
 
-Add app_name 
-facebook_app_id 
-fb_login_protocol_scheme (fb+facebook_app_id) 
+Add app_name , 
+facebook_app_id , 
+fb_login_protocol_scheme (fb+facebook_app_id) , 
 facebook_client_token
