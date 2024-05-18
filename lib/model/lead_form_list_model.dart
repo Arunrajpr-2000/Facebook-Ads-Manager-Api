@@ -65,22 +65,23 @@ class LeadFormListModel {
   }
 
   Map<String, dynamic> toJson() => {
-        "data": data.map((x) => x?.toJson()).toList(),
+        "data": data.map((x) => x.toJson()).toList(),
       };
 }
 
 class LeadFormListData {
-  LeadFormListData({
-    required this.id,
-    required this.name,
-    required this.leadsCount,
-    required this.leads,
-  });
+  LeadFormListData(
+      {required this.id,
+      required this.name,
+      required this.leadsCount,
+      required this.leads,
+      required this.status});
 
   final String? id;
   final String? name;
   final int? leadsCount;
   final Leads? leads;
+  final String? status;
 
   factory LeadFormListData.fromJson(Map<String, dynamic> json) {
     return LeadFormListData(
@@ -88,6 +89,7 @@ class LeadFormListData {
       name: json["name"],
       leadsCount: json["leads_count"],
       leads: json["leads"] == null ? null : Leads.fromJson(json["leads"]),
+      status: json["status"],
     );
   }
 
@@ -116,7 +118,7 @@ class Leads {
   }
 
   Map<String, dynamic> toJson() => {
-        "data": data.map((x) => x?.toJson()).toList(),
+        "data": data.map((x) => x.toJson()).toList(),
       };
 }
 
@@ -145,7 +147,7 @@ class LeadsDatum {
   Map<String, dynamic> toJson() => {
         "created_time": createdTime,
         "id": id,
-        "field_data": fieldData.map((x) => x?.toJson()).toList(),
+        "field_data": fieldData.map((x) => x.toJson()).toList(),
       };
 }
 

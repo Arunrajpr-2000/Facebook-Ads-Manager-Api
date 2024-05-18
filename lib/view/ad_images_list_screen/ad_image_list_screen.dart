@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:just_ghar_facebook_post/view/ad_image_detail_screen/ad_image_detail_screen.dart';
+import 'package:just_ghar_facebook_post/widgets/drawer_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
@@ -40,6 +41,7 @@ class _AdImageListScreenState extends State<AdImageListScreen> {
           ),
         ],
       ),
+      drawer: const DrawerWidget(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : adImageList.isEmpty

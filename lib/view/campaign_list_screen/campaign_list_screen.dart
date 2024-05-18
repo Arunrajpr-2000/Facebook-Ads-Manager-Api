@@ -48,6 +48,7 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
                 builder: (context) => AlertDialogWithTextField(
                   title: 'Add Campaign',
                   hintText: 'Enter Campaign name',
+                  isCampaign: true,
                   onSubmit: (name) async {
                     log('Submitted name: $name');
                     setState(() {
@@ -55,7 +56,7 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
                     });
                     CampaignModel campaignModel = CampaignModel(
                       name: name,
-                      objective: "OUTCOME_ENGAGEMENT",
+                      objective: "OUTCOME_LEADS",
                       status: "ACTIVE",
                       specialAdCategories: ["HOUSING"],
                     );
@@ -64,24 +65,27 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
                 ),
               );
             },
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           )
         ],
       ),
-      drawer: DrawerWidget(),
+      drawer: const DrawerWidget(),
       body: isLoading == true
           ? const Center(child: CircularProgressIndicator(color: Colors.black))
           : ListView.builder(
               itemCount: campaigns.length,
               itemBuilder: (context, index) {
                 final campaign = campaigns[index];
+
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            AdsetListScreen(campaignId: campaign.id.toString()),
+                        builder: (context) => AdsetListScreen(
+                          campaignId: campaign.id.toString(),
+                          campaignObjective: campaign.objective!,
+                        ),
                       ));
                     },
                     tileColor: Colors.white,

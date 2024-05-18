@@ -1,16 +1,16 @@
 class AdsetModel {
-  AdsetModel({
-    this.id,
-    required this.name,
-    required this.optimizationGoal,
-    required this.billingEvent,
-    required this.bidAmount,
-    required this.dailyBudget,
-    required this.campaignId,
-    required this.targeting,
-    required this.startTime,
-    required this.status,
-  });
+  AdsetModel(
+      {this.id,
+      required this.name,
+      required this.optimizationGoal,
+      required this.billingEvent,
+      required this.bidAmount,
+      required this.dailyBudget,
+      required this.campaignId,
+      required this.targeting,
+      required this.startTime,
+      required this.status,
+      required this.promotedObject});
 
   final String? id;
   final String? name;
@@ -22,6 +22,7 @@ class AdsetModel {
   final Targeting? targeting;
   final String? startTime;
   final String? status;
+  final PromotedObject? promotedObject;
 
   factory AdsetModel.fromJson(Map<String, dynamic> json) {
     return AdsetModel(
@@ -37,12 +38,15 @@ class AdsetModel {
           : Targeting.fromJson(json["targeting"]),
       startTime: json["start_time"],
       status: json["status"],
+      promotedObject: json["promoted_object"] == null
+          ? null
+          : PromotedObject.fromJson(json["promoted_object"]),
     );
   }
 
   Map<String, dynamic> toJson() => {
         "name": name,
-        "optimization_goal": optimizationGoal,
+        "optimization_goal": "LEAD_GENERATION",
         "billing_event": billingEvent,
         "bid_amount": bidAmount,
         "daily_budget": dailyBudget,
@@ -50,6 +54,26 @@ class AdsetModel {
         "targeting": targeting?.toJson(),
         "start_time": startTime,
         "status": status,
+        "promoted_object": promotedObject?.toJson(),
+        "destination_type": "ON_AD",
+      };
+}
+
+class PromotedObject {
+  PromotedObject({
+    required this.pageId,
+  });
+
+  final String? pageId;
+
+  factory PromotedObject.fromJson(Map<String, dynamic> json) {
+    return PromotedObject(
+      pageId: json["page_id"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "page_id": pageId,
       };
 }
 

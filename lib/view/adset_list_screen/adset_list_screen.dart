@@ -11,7 +11,9 @@ import 'package:just_ghar_facebook_post/view/ads_list_screen/ads_list_screen.dar
 
 class AdsetListScreen extends StatefulWidget {
   final String campaignId;
-  const AdsetListScreen({super.key, required this.campaignId});
+  final String campaignObjective;
+  const AdsetListScreen(
+      {super.key, required this.campaignId, required this.campaignObjective});
 
   @override
   State<AdsetListScreen> createState() => _AdsetListScreenState();
@@ -61,18 +63,25 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
                           GeoLocations(countries: ["IN"]);
                       Interest interest =
                           Interest(id: 6003139266461, name: "Movies");
+                      String optimizationGoal =
+                          widget.campaignObjective == "OUTCOME_LEADS"
+                              ? "LEAD_GENERATION"
+                              : "REACH";
+                      log(optimizationGoal);
+
                       AdsetModel adsetModel = AdsetModel(
                           name: name,
-                          optimizationGoal: "REACH",
+                          optimizationGoal: optimizationGoal,
                           billingEvent: "IMPRESSIONS",
                           bidAmount: 1000,
-                          dailyBudget: 44000,
+                          dailyBudget: 10000,
                           campaignId: widget.campaignId,
                           targeting: Targeting(
                               geoLocations: geoLocations,
                               interests: [interest]),
                           startTime: formattedDateTime,
-                          status: "ACTIVE");
+                          status: "ACTIVE",
+                          promotedObject: PromotedObject(pageId: pageId));
                       await postAdset(adsetModel);
                     },
                   ),
@@ -91,10 +100,12 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            AdsListScreen(adSetId: adset.id.toString()),
-                      ));
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AdsListScreen(adSetId: adset.id.toString()),
+                        ),
+                      );
                     },
                     tileColor: Colors.white,
                     title: Text(adset.name ?? 'Null'),
@@ -137,6 +148,7 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
   Future<void> postAdset(AdsetModel adsetModel) async {
     final url = Uri.parse(
         '$adAccBaseUrl/adsets?fields=bid_amount,name,daily_budget,campaign_id,status,targeting,start_time,billing_event,optimization_goal');
+
     final body = jsonEncode(adsetModel.toJson());
 
     final response = await http.post(

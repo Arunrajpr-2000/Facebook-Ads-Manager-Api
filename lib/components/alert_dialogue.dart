@@ -4,13 +4,14 @@ class AlertDialogWithTextField extends StatefulWidget {
   final String title;
   final String hintText;
   final Function(String) onSubmit;
+  final bool isCampaign;
 
-  const AlertDialogWithTextField({
-    super.key,
-    required this.title,
-    required this.hintText,
-    required this.onSubmit,
-  });
+  const AlertDialogWithTextField(
+      {super.key,
+      required this.title,
+      required this.hintText,
+      required this.onSubmit,
+      this.isCampaign = false});
 
   @override
   State<AlertDialogWithTextField> createState() =>
@@ -33,15 +34,21 @@ class _AlertDialogWithTextFieldState extends State<AlertDialogWithTextField> {
       title: Text(widget.title),
       content: Form(
         key: _formKey,
-        child: TextFormField(
-          controller: _textController,
-          decoration: InputDecoration(hintText: widget.hintText),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a value';
-            }
-            return null;
-          },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _textController,
+              decoration: InputDecoration(hintText: widget.hintText),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a value';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
         ),
       ),
       actions: [
@@ -52,10 +59,7 @@ class _AlertDialogWithTextFieldState extends State<AlertDialogWithTextField> {
         TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              widget.onSubmit(
-                _textController.text,
-              );
-
+              widget.onSubmit(_textController.text);
               Navigator.pop(context);
             }
           },

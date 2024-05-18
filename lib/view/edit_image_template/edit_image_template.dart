@@ -1,5 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:developer';
+
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
+import 'package:just_ghar_facebook_post/widgets/drawer_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:screenshot/screenshot.dart';
@@ -59,7 +64,7 @@ class _EditImageTemplateState extends State<EditImageTemplate> {
         ),
       );
     } catch (error) {
-      print(error);
+      log(error.toString());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Failed to save image!'),
@@ -85,6 +90,7 @@ class _EditImageTemplateState extends State<EditImageTemplate> {
       appBar: AppBar(
         title: const Text("Edit Image"),
       ),
+      drawer: const DrawerWidget(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

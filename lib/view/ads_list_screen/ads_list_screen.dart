@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:just_ghar_facebook_post/components/alert_dialogue.dart';
+import 'package:just_ghar_facebook_post/components/utils.dart';
+import 'package:just_ghar_facebook_post/model/ad_creative_model.dart';
 import 'package:just_ghar_facebook_post/model/ads_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_ghar_facebook_post/core/const.dart';
@@ -19,11 +20,16 @@ class _AdsListScreenState extends State<AdsListScreen> {
   List<AdsModel> adsModel = [];
   bool isLoading = true;
   String? errorMessage;
+  bool isLoadingCreative = true;
+  List<AdCreativeModel> adCreativeList = [];
+  TextEditingController adNameController = TextEditingController();
+  String selectedCreativeId = "";
 
   @override
   void initState() {
     super.initState();
     getAds();
+    getAdCreativeList();
   }
 
   @override
@@ -48,26 +54,144 @@ class _AdsListScreenState extends State<AdsListScreen> {
               icon: const Icon(Icons.refresh)),
           IconButton(
               onPressed: () {
-                Creative creative = Creative(id: "120207346276350665");
-                showDialog(
+                showModalBottomSheet(
                   context: context,
-                  builder: (context) => AlertDialogWithTextField(
-                    title: 'Add Ads',
-                    hintText: 'Enter Ad name',
-                    onSubmit: (name) async {
-                      log('Submitted name: $name');
-                      setState(() {
-                        isLoading = true;
-                      });
-                      AdsModel adsModel = AdsModel(
-                        name: name,
-                        adsetId: widget.adSetId,
-                        creative: creative,
-                        status: "ACTIVE",
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return StatefulBuilder(builder: (context, setState) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                          top: 16.0,
+                          left: 16.0,
+                          right: 16.0,
+                        ),
+                        child: SizedBox(
+                          height: 620,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text(
+                                  'Add Ads',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 16.0),
+                                TextField(
+                                  controller: adNameController,
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter Ad name',
+                                  ),
+                                ),
+                                const SizedBox(height: 16.0),
+                                Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                          color: Colors.black,
+                                          width:
+                                              1), // Define border color and width
+                                    ),
+                                    alignment: Alignment.center,
+                                    child: Text(selectedCreativeId.isEmpty
+                                        ? "Select Creative Id"
+                                        : "Creative Id: $selectedCreativeId")),
+                                isLoadingCreative
+                                    ? const SizedBox(
+                                        height: 400,
+                                        child: Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        height: 400,
+                                        child: ListView.builder(
+                                          // separatorBuilder: (context, index) => const SizedBox(height: 10),
+                                          itemCount: adCreativeList.length,
+                                          itemBuilder: (context, index) {
+                                            if (adCreativeList[index]
+                                                    .imageHash !=
+                                                null) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  log(adCreativeList[index]
+                                                      .id!);
+                                                  setState(() {
+                                                    selectedCreativeId =
+                                                        adCreativeList[index]
+                                                            .id!;
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 8.0),
+                                                  child: ListTile(
+                                                    leading: CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        adCreativeList[index]
+                                                                .imageUrl ??
+                                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwA8Vgl_Drqz_qUfSKiU9El_JlvsYkdDeClVp3TOB6_w&s",
+                                                      ),
+                                                    ),
+                                                    title: Text(
+                                                      adCreativeList[index]
+                                                              .name ??
+                                                          "No Name",
+                                                      maxLines: 1,
+                                                    ),
+                                                    subtitle: Text(
+                                                        "Hash :${adCreativeList[index].imageHash!}"),
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              return const SizedBox.shrink();
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                const SizedBox(height: 16.0),
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    if (adNameController.text.isNotEmpty &&
+                                        selectedCreativeId.isNotEmpty) {
+                                      log("Success");
+                                      AdsModel adsModel = AdsModel(
+                                        name: adNameController.text,
+                                        adsetId: widget.adSetId,
+                                        creative:
+                                            Creative(id: selectedCreativeId),
+                                        status: "ACTIVE",
+                                      );
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      await postAds(adsModel);
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pop(context);
+                                    } else {
+                                      Navigator.pop(context);
+
+                                      snackBarWidget(
+                                          context, "Please fill all fields");
+                                    }
+                                  },
+                                  child: const Text("submit"),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       );
-                      await postAds(adsModel);
-                    },
-                  ),
+                    });
+                  },
                 );
               },
               icon: const Icon(Icons.add))
@@ -148,6 +272,40 @@ class _AdsListScreenState extends State<AdsListScreen> {
       log(response.body);
       setState(() {
         isLoading = false;
+      });
+    }
+  }
+
+  getAdCreativeList() async {
+    setState(() {
+      isLoadingCreative = true;
+    });
+    Uri url = Uri.parse(
+        '$adAccBaseUrl/adcreatives?fields=id,name,object_story_spec,image_url,image_hash&limit=300');
+    log(url.toString());
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final adsImage = data["data"] as List;
+      setState(() {
+        adCreativeList =
+            adsImage.map((json) => AdCreativeModel.fromJson(json)).toList();
+        isLoadingCreative = false;
+      });
+
+      log(adCreativeList.length.toString());
+    } else {
+      log(response.statusCode.toString());
+      setState(() {
+        isLoadingCreative = false;
       });
     }
   }
