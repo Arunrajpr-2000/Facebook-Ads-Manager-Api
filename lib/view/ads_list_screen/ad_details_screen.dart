@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:just_ghar_facebook_post/components/utils.dart';
 import 'package:just_ghar_facebook_post/core/const.dart';
@@ -337,7 +338,7 @@ class _AdDetailScreenState extends State<AdDetailScreen> {
         }
       }
     } else {
-      print('Error fetching image URL: ${imageUrlResponse.statusCode}');
+      log('Error fetching image URL: ${imageUrlResponse.statusCode}');
     }
 
     return null;
