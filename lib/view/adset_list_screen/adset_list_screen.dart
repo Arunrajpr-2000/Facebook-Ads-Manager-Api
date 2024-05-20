@@ -35,7 +35,13 @@ class _AdsetListScreenState extends State<AdsetListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
-        title: const Text('Facebook AdSets'),
+        title: const Text(
+          'Facebook AdSets',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: () async {

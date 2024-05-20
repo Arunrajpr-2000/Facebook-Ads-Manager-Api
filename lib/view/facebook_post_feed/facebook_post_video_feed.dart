@@ -49,7 +49,10 @@ class FacebookPostVideoState extends State<FacebookPostVideo> {
       appBar: AppBar(
         title: const Text(
           'Facebook Post Video',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
       body: Center(

@@ -46,7 +46,13 @@ class _AddAdcreativeScreenState extends State<AddAdcreativeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add AdCreative"),
+        title: const Text(
+          "Add AdCreative",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

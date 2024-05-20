@@ -30,7 +30,13 @@ class _FacebookCampaignsState extends State<FacebookCampaigns> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
-        title: const Text('Facebook Campaigns'),
+        title: const Text(
+          'Facebook Campaigns',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () async {

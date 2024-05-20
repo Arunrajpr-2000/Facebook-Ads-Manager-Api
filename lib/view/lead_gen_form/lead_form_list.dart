@@ -56,7 +56,13 @@ class _LeadFormListScreenState extends State<LeadFormListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
-        title: const Text('Lead Gen Form'),
+        title: const Text(
+          'Lead Gen Form',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       drawer: const DrawerWidget(),
       body: isLoading == true

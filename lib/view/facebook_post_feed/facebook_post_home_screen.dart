@@ -17,7 +17,13 @@ class _FacebookPostHomeScreenState extends State<FacebookPostHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Post On Facebook"),
+        title: const Text(
+          "Post On Facebook",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       drawer: const DrawerWidget(),
       body: Center(

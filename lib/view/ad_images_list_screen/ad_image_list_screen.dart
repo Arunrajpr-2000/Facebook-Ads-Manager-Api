@@ -31,7 +31,13 @@ class _AdImageListScreenState extends State<AdImageListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ad Images'),
+        title: const Text(
+          'Ad Images',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () async {

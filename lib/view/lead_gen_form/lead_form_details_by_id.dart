@@ -19,7 +19,13 @@ class _LeadFormDetailScreenState extends State<LeadFormDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Lead Gen Data'),
+        title: const Text(
+          'Lead Gen Data',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: ListView.builder(
         itemCount: widget.leadsfieldData.length,

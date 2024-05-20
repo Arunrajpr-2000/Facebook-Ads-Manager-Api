@@ -19,7 +19,10 @@ class _FacebookPostTextState extends State<FacebookPostText> {
       appBar: AppBar(
         title: const Text(
           'Facebook Post Text',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
       body: Center(

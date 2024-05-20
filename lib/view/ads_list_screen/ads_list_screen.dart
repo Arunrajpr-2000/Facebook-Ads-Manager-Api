@@ -7,6 +7,7 @@ import 'package:just_ghar_facebook_post/model/ad_creative_model.dart';
 import 'package:just_ghar_facebook_post/model/ads_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_ghar_facebook_post/core/const.dart';
+import 'package:just_ghar_facebook_post/view/ads_list_screen/ad_details_screen.dart';
 
 class AdsListScreen extends StatefulWidget {
   final String adSetId;
@@ -42,7 +43,13 @@ class _AdsListScreenState extends State<AdsListScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
-        title: const Text('Facebook Ads'),
+        title: const Text(
+          'Facebook Ads',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: () async {
@@ -209,7 +216,15 @@ class _AdsListScreenState extends State<AdsListScreen> {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  AdDetailScreen(adsModel: ads),
+                            ),
+                          );
+                        },
                         tileColor: Colors.white,
                         title: Text(ads.name ?? 'Null'),
                         subtitle: Column(
@@ -228,7 +243,7 @@ class _AdsListScreenState extends State<AdsListScreen> {
 
   Future<void> getAds() async {
     final url = Uri.parse(
-        '$baseUrl/${widget.adSetId}/ads?fields=id,name,adset_id,creative,status,preview_shareable_link&access_token=$accessToken');
+        '$baseUrl/${widget.adSetId}/ads?fields=id,name,adset_id,creative{id,name,object_story_spec},status,preview_shareable_link,leads&access_token=$accessToken');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {

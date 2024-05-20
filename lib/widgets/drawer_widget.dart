@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_ghar_facebook_post/view/ad_creative_screen/ad_creative_list_screen.dart';
 import 'package:just_ghar_facebook_post/view/ad_images_list_screen/ad_image_list_screen.dart';
 import 'package:just_ghar_facebook_post/view/campaign_list_screen/campaign_list_screen.dart';
-import 'package:just_ghar_facebook_post/view/edit_image_template/edit_image_template.dart';
+import 'package:just_ghar_facebook_post/view/edit_image_template/edit_ad_image_template.dart';
 import 'package:just_ghar_facebook_post/view/facebook_post_feed/facebook_post_home_screen.dart';
 import 'package:just_ghar_facebook_post/view/lead_gen_form/lead_form_list.dart';
 
@@ -61,7 +61,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           _createDrawerItem(
             icon: Icons.tune,
             text: 'Edit Ads Image',
-            onTap: () => _navigateToScreen(context, const EditImageTemplate()),
+            onTap: () =>
+                _navigateToScreen(context, const EditAdImageTemplate()),
           ),
           _createDrawerItem(
             icon: Icons.add_photo_alternate,

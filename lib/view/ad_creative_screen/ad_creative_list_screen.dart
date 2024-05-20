@@ -29,7 +29,13 @@ class _AdCreativeListScreenState extends State<AdCreativeListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ad Creative"),
+        title: const Text(
+          "Ad Creative",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
         actions: [
           IconButton(
               onPressed: () {

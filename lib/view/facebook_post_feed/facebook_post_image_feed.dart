@@ -29,7 +29,10 @@ class FacebookPostImageState extends State<FacebookPostImage> {
       appBar: AppBar(
         title: const Text(
           'Facebook Post Image',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
       body: Center(
