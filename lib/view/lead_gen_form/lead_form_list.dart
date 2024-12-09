@@ -35,6 +35,9 @@ class _LeadFormListScreenState extends State<LeadFormListScreen> {
           isLoading = false;
         });
       } else {
+        setState(() {
+          isLoading = false;
+        });
         throw Exception('Error getting lead gen forms: ${response.statusCode}');
       }
     } on Exception catch (error) {
@@ -67,49 +70,54 @@ class _LeadFormListScreenState extends State<LeadFormListScreen> {
       drawer: const DrawerWidget(),
       body: isLoading == true
           ? const Center(child: CircularProgressIndicator(color: Colors.black))
-          : ListView.builder(
-              itemCount: leadFormList.length,
-              itemBuilder: (context, index) {
-                final data = leadFormList[index];
-                if (data.status == "ACTIVE") {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListTile(
-                      onTap: () {
-                        if (data.leads != null && data.leads!.data.isNotEmpty) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => LeadFormDetailScreen(
-                                leadsfieldData: data.leads!.data,
-                              ),
-                            ),
-                          );
-                        } else {
-                          // Handle the case when data.leads is null or empty
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No lead data available'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-                        }
-                      },
-                      tileColor: Colors.white,
-                      title: Text(data.name ?? 'Null'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("ID : ${data.id}"),
-                          Text('count: ${data.leadsCount}'),
-                        ],
-                      ),
-                    ),
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              },
-            ),
+          : leadFormList.isEmpty
+              ? const Center(
+                  child: Text("Empty"),
+                )
+              : ListView.builder(
+                  itemCount: leadFormList.length,
+                  itemBuilder: (context, index) {
+                    final data = leadFormList[index];
+                    if (data.status == "ACTIVE") {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          onTap: () {
+                            if (data.leads != null &&
+                                data.leads!.data.isNotEmpty) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => LeadFormDetailScreen(
+                                    leadsfieldData: data.leads!.data,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              // Handle the case when data.leads is null or empty
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('No lead data available'),
+                                  duration: Duration(seconds: 1),
+                                ),
+                              );
+                            }
+                          },
+                          tileColor: Colors.white,
+                          title: Text(data.name ?? 'Null'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("ID : ${data.id}"),
+                              Text('count: ${data.leadsCount}'),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  },
+                ),
     );
   }
 }

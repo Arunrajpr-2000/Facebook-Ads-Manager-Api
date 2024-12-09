@@ -138,8 +138,7 @@ class _EditAdImageTemplateState extends State<EditAdImageTemplate> {
                         left: 10,
                         child: SizedBox(
                           height: 50,
-                          child: Image.network(
-                              "https://scontent.fblr1-8.fna.fbcdn.net/v/t39.30808-1/309418618_519255106876369_5038763566503765362_n.jpg?stp=dst-jpg_p480x480&_nc_cat=101&ccb=1-7&_nc_sid=5f2048&_nc_ohc=EBdPuuZ2rOwQ7kNvgHjFsON&_nc_ht=scontent.fblr1-8.fna&oh=00_AYBlhuPPFgOdoRbgP1JH04sYBzyZfmrAy0s2N7UDjqzXtw&oe=664B9718"),
+                          child: Image.asset("assets/JustGhar-logo.jpg"),
                         ),
                       ),
                       Positioned(

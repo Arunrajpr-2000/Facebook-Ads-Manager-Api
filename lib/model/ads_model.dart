@@ -195,7 +195,7 @@ class Leads {
   }
 
   Map<String, dynamic> toJson() => {
-        "data": data.map((x) => x?.toJson()).toList(),
+        "data": data.map((x) => x.toJson()).toList(),
       };
 }
 
@@ -224,7 +224,7 @@ class LeadsDatum {
   Map<String, dynamic> toJson() => {
         "created_time": createdTime,
         "id": id,
-        "field_data": fieldData.map((x) => x?.toJson()).toList(),
+        "field_data": fieldData.map((x) => x.toJson()).toList(),
       };
 }
 

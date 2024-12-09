@@ -310,12 +310,13 @@ class _AdsListScreenState extends State<AdsListScreen> {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final adsImage = data["data"] as List;
-      setState(() {
-        adCreativeList =
-            adsImage.map((json) => AdCreativeModel.fromJson(json)).toList();
-        isLoadingCreative = false;
-      });
-
+      if (mounted) {
+        setState(() {
+          adCreativeList =
+              adsImage.map((json) => AdCreativeModel.fromJson(json)).toList();
+          isLoadingCreative = false;
+        });
+      }
       log(adCreativeList.length.toString());
     } else {
       log(response.statusCode.toString());
